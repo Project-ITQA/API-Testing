@@ -16,18 +16,9 @@
         <junit-vintage-engine.version>5.11.3</junit-vintage-engine.version>
         <junit-platform-suite.version>1.11.3</junit-platform-suite.version>
         <cucumber-junit-platform-engine.version>7.20.1</cucumber-junit-platform-engine.version>
-        <encoding>UTF-8</encoding>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.zerodefect</groupId>
-            <artifactId>demo-api</artifactId>
-            <version>0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/demo-0.0.1-SNAPSHOT.jar</systemPath>
-        </dependency>
-
         <dependency>
             <groupId>net.serenity-bdd</groupId>
             <artifactId>serenity-core</artifactId>
@@ -95,32 +86,13 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.2</version>
-                <configuration>
                     <includes>
-                        <include>**/*Hooks*.java</include>
                         <include>**/*Test*.java</include>
                     </includes>
+                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
                     <parallel>classes</parallel>
                     <parallel>methods</parallel>
-                    <useUnlimitedThreads>true</useUnlimitedThreads>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,8 +109,6 @@
                 <artifactId>serenity-maven-plugin</artifactId>
                 <version>${serenity.version}</version>
                 <configuration>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <tags>${tags}</tags>
                     <reports>single-page-html</reports>
                 </configuration>
                 <dependencies>
