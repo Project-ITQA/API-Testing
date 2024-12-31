@@ -5,7 +5,7 @@ import net.serenitybdd.annotations.Step;
 import utils.BookApiEndpoints;
 
 import static net.serenitybdd.rest.SerenityRest.given;
-import static net.serenitybdd.rest.SerenityRest.lastResponse;
+import static net.serenitybdd.rest.SerenityRest.then;
 
 public class BookApiClient {
     @Step("get all books")
@@ -15,6 +15,6 @@ public class BookApiClient {
 
     @Step("verify unauthorized")
     public void verifyUnauthorized() {
-        lastResponse().then().statusCode(401);
+        then().statusCode(401);
     }
 }
