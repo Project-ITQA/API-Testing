@@ -1,20 +1,19 @@
 package clients;
 
-import models.Book;
 import net.serenitybdd.annotations.Step;
+import org.hamcrest.Matchers;
 import utils.BookApiEndpoints;
 
-import static net.serenitybdd.rest.SerenityRest.given;
-import static net.serenitybdd.rest.SerenityRest.then;
+import static net.serenitybdd.rest.SerenityRest.*;
 
 public class BookApiClient {
-    @Step("get all books")
+    @Step("GET all books")
     public void getAllBooks() {
-        given().get(BookApiEndpoints.GET_ALL);
+        when().get(BookApiEndpoints.GET_ALL);
     }
 
-    @Step("verify unauthorized")
-    public void verifyUnauthorized() {
-        then().statusCode(401);
+    @Step("Verify status code as {0}")
+    public void verifyStatusCode(int statusCode) {
+        then().statusCode(Matchers.equalTo(statusCode));
     }
 }
