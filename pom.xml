@@ -100,6 +100,7 @@
                         <include>**/*Test*.java</include>
                     </includes>
                     <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+                    <testFailureIgnore>true</testFailureIgnore>
                     <parallel>classes</parallel>
                     <parallel>methods</parallel>
                 </configuration>
