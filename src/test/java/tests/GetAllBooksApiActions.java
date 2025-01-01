@@ -8,7 +8,7 @@ import net.serenitybdd.annotations.Steps;
 
 public class GetAllBooksApiActions {
     @Steps
-    BookApiClient bookApiClient;
+    BookApiClient apiClient;
 
     @Given("user is not logged in")
     public void userNotLoggedIn() {
@@ -16,11 +16,11 @@ public class GetAllBooksApiActions {
 
     @When("user asks for all books")
     public void asksForAllBooks() {
-        bookApiClient.getAllBooks();
+        apiClient.getAllBooks();
     }
 
-    @Then("user gets unauthorized response")
-    public void getUnauthorizedResponse() {
-        bookApiClient.verifyUnauthorized();
+    @Then("user gets status code as {int}")
+    public void receiveStatusCode(int statusCode) {
+        apiClient.verifyStatusCode(statusCode);
     }
 }
