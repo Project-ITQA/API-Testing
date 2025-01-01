@@ -1,13 +1,12 @@
-package steps;
+package tests;
 
 import clients.BookApiClient;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
-import net.serenitybdd.core.steps.UIInteractions;
 
-public class BookApiActions extends UIInteractions {
+public class GetBookByIDApiActions {
     @Steps
     BookApiClient bookApiClient;
 
