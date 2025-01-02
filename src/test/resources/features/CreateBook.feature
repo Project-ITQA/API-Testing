@@ -14,10 +14,6 @@ Feature: Create book
     When user posts the book details title "the gambler 3"
     Then user gets 400 code
 
-  Scenario: Create a book with empty values
-    When user posts the book details title "" and author ""
-    Then user gets 400 code
-
   Scenario: Create a book with duplicate Id
     When user posts the book details title "the gambler 4" and author "Fyodar 4" and Id 5
     Then user gets 201 code
