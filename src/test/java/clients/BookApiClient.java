@@ -31,30 +31,6 @@ public class BookApiClient {
                 .post(BookApiEndpoints.CREATE);
     }
 
-    @Step("post the book with Id")
-    public void createBookWithId(Book book) {
-        given()
-                .auth()
-                .preemptive()
-                .basic("admin", "password")
-                .contentType("application/json")
-                .body(book.toJSONString())
-                .when()
-                .post(BookApiEndpoints.CREATE);
-    }
-
-    @Step("post the book with title only {0}")
-    public void createBookWithTitle(Book book) {
-        given()
-                .auth()
-                .preemptive()
-                .basic("admin", "password")
-                .contentType("application/json")
-                .body(book.toJSONString())
-                .when()
-                .post(BookApiEndpoints.CREATE);
-    }
-
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
         if(book.getId()>0){

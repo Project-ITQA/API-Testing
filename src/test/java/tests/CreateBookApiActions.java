@@ -34,11 +34,18 @@ public class CreateBookApiActions {
     public void user_posts_the_book_details_title(String title) {
         Book book = new Book();
         book.setTitle(title);
-        bookApiClient.createBookWithTitle(book);
+        bookApiClient.createBook(book);
+    }
+
+    @When("user posts the book details author {string}")
+    public void user_posts_the_book_details_author(String author) {
+        Book book = new Book();
+        book.setAuthor(author);
+        bookApiClient.createBook(book);
     }
 
     @When("user posts the book details title {string} and author {string} and Id {int}")
     public void userPostsTheBookDetailsTitleAndAuthorAndId(String title, String author, int id) {
-        bookApiClient.createBookWithId(new Book(id, title, author));
+        bookApiClient.createBook(new Book(id, title, author));
     }
 }
