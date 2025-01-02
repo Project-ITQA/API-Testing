@@ -1,5 +1,5 @@
 Feature: Get All Books
-  Scenario: Get All Books When Not Logged In
-    Given user is not logged in
-    When user asks for all books
-    Then user gets status code as 401
+  Scenario: Unauthorized user tries to get all books
+    Given the user is not logged in
+    When the user requests the list of all books
+    Then the response status code should be 401
