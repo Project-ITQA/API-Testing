@@ -4,6 +4,7 @@ import clients.BookApiClient;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import models.Book;
 import net.serenitybdd.annotations.Steps;
 
 public class GetAllBooksApiActions {
@@ -19,8 +20,13 @@ public class GetAllBooksApiActions {
         apiClient.getAllBooks();
     }
 
-    @Then("user gets status code as {int}")
-    public void receiveStatusCode(int statusCode) {
-        apiClient.verifyStatusCode(statusCode);
-    }
+//    @Then("user gets status code as {int}")
+//    public void receiveStatusCode(int statusCode) {
+//        apiClient.verifyStatusCode(statusCode);
+//    }
+
+
+
+
+
 }
