@@ -2,6 +2,7 @@ package clients;
 
 import models.Book;
 import net.serenitybdd.annotations.Step;
+import org.hamcrest.Matchers;
 import utils.BookApiEndpoints;
 
 import static net.serenitybdd.rest.SerenityRest.*;
@@ -19,6 +20,11 @@ public class BookApiClient {
         then().statusCode(statusCode);
     }
 
+    @Step("authenticate with username: {0} and password: {1}")
+    public void authenticate(String username, String password) {
+        given().auth().preemptive().basic(username, password);
+    }
+
     @Step("post the book")
     public void createBook(Book book) {
         given()
@@ -33,15 +39,25 @@ public class BookApiClient {
 
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
-        if(book.getId()>0){
-        then().
-                body("id", equalTo(book.getId()))
-                .body("title", equalTo(book.getTitle()))
-                .body("author", equalTo(book.getAuthor()));
-        }else{
+        if (book.getId() > 0) {
+            then().
+                    body("id", equalTo(book.getId()))
+                    .body("title", equalTo(book.getTitle()))
+                    .body("author", equalTo(book.getAuthor()));
+        } else {
             then()
                     .body("title", equalTo(book.getTitle()))
                     .body("author", equalTo(book.getAuthor()));
         }
+    }
+
+    @Step("check if the response returned a list including the book: {0}")
+    public void checkResponseContainsBookInList(Book book) {
+        then().body(Matchers.arrayContaining(Matchers.theInstance(book)));
+    }
+
+    @Step("check if the response returned an empty list")
+    public void checkResponseReturnedEmptyList() {
+        then().body("", Matchers.empty());
     }
 }
