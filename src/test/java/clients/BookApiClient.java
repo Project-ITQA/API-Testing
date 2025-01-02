@@ -23,10 +23,22 @@ public class BookApiClient {
     public void createBook(Book book) {
         given()
                 .auth()
-                .preemptive() // Ensures credentials are sent in the initial request
-                .basic("admin", "password") // Replace with your username and password
+                .preemptive()
+                .basic("admin", "password")
                 .contentType("application/json")
-                .body("{ \"title\": \"" + book.getTitle() + "\", \"author\": \"" + book.getAuthor() + "\" }")
+                .body(book.toJsonString(true))
+                .when()
+                .post(BookApiEndpoints.CREATE);
+    }
+
+    @Step("post the book with Id")
+    public void createBookWithId(Book book) {
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(book.toJsonString(false))
                 .when()
                 .post(BookApiEndpoints.CREATE);
     }
@@ -35,8 +47,8 @@ public class BookApiClient {
     public void createBookWithTitle(String title) {
         given()
                 .auth()
-                .preemptive() // Ensures credentials are sent in the initial request
-                .basic("admin", "password") // Replace with your username and password
+                .preemptive()
+                .basic("admin", "password")
                 .contentType("application/json")
                 .body("{ \"title\": \"" + title + "\" }")
                 .when()

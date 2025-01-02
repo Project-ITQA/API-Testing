@@ -52,5 +52,13 @@ public class Book {
                 ", author='" + author + '\'' +
                 '}';
     }
+
+    public String toJsonString(boolean excludeID){
+        if(excludeID){
+            return "{ \"title\": \"" + this.title + "\", \"author\": \"" + this.author + "\" }";
+        }else{
+            return "{ \"id\": \"" + this.id + "\", \"title\": \"" + this.title + "\", \"author\": \"" + this.author + "\" }";
+        }
+    }
 }
 
