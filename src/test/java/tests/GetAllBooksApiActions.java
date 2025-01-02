@@ -4,7 +4,6 @@ import clients.BookApiClient;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import models.Book;
 import net.serenitybdd.annotations.Steps;
 
 public class GetAllBooksApiActions {
@@ -21,13 +20,13 @@ public class GetAllBooksApiActions {
         apiClient.getAllBooks();
     }
 
-    @And("the response should contain a list of books")
-    public void theResponseShouldContainAListOfBooks() {
-        apiClient.checkResponseContainsBookInList(new Book());
-    }
-
     @And("the response should be empty")
     public void theResponseShouldContainAnEmptyArray() {
         apiClient.checkResponseReturnedEmptyList();
+    }
+
+    @And("the response should be a list of books containing a book with title: {string} and author: {string}")
+    public void theResponseShouldBeAListContainingBook(String title, String author) {
+        apiClient.checkResponseContainsBookInList(title, author);
     }
 }

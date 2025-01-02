@@ -8,6 +8,7 @@ import utils.BookApiEndpoints;
 
 import static net.serenitybdd.rest.SerenityRest.*;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 
 public class BookApiClient {
 
@@ -45,9 +46,9 @@ public class BookApiClient {
         }
     }
 
-    @Step("check if the response returned a list including the book: {0}")
-    public void checkResponseContainsBookInList(Book book) {
-        then().body(Matchers.arrayContaining(Matchers.theInstance(book)));
+    @Step("check if the response returned a list including the book with title: {0} and author: {1}")
+    public void checkResponseContainsBookInList(String title, String author) {
+        then().body("title", hasItem(title)).body("author", hasItem(author));
     }
 
     @Step("check if the response returned an empty list")
