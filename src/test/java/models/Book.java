@@ -1,17 +1,18 @@
 package models;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class Book {
     private int id;
     private String title;
     private String author;
 
+    public Book() {}
+
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
-    }
-
-    public Book(String title) {
-        this.title = title;
     }
 
     public Book(int id, String title, String author) {
@@ -53,12 +54,21 @@ public class Book {
                 '}';
     }
 
-    public String toJsonString(boolean excludeID){
-        if(excludeID){
-            return "{ \"title\": \"" + this.title + "\", \"author\": \"" + this.author + "\" }";
-        }else{
-            return "{ \"id\": \"" + this.id + "\", \"title\": \"" + this.title + "\", \"author\": \"" + this.author + "\" }";
+    public String toJSONString() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode jsonObject = mapper.createObjectNode();
+
+        if (this.id != 0) {
+            jsonObject.put("id", this.id);
         }
+        if (this.title != null && !this.title.isEmpty()) {
+            jsonObject.put("title", this.title);
+        }
+        if (this.author != null && !this.author.isEmpty()) {
+            jsonObject.put("author", this.author);
+        }
+
+        return jsonObject.toString();
     }
 }
 
