@@ -26,7 +26,7 @@ public class BookApiClient {
                 .preemptive()
                 .basic("admin", "password")
                 .contentType("application/json")
-                .body(book.toJsonString(true))
+                .body(book.toJSONString())
                 .when()
                 .post(BookApiEndpoints.CREATE);
     }
@@ -38,19 +38,19 @@ public class BookApiClient {
                 .preemptive()
                 .basic("admin", "password")
                 .contentType("application/json")
-                .body(book.toJsonString(false))
+                .body(book.toJSONString())
                 .when()
                 .post(BookApiEndpoints.CREATE);
     }
 
     @Step("post the book with title only {0}")
-    public void createBookWithTitle(String title) {
+    public void createBookWithTitle(Book book) {
         given()
                 .auth()
                 .preemptive()
                 .basic("admin", "password")
                 .contentType("application/json")
-                .body("{ \"title\": \"" + title + "\" }")
+                .body(book.toJSONString())
                 .when()
                 .post(BookApiEndpoints.CREATE);
     }
