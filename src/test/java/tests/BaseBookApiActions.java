@@ -14,6 +14,11 @@ public class BaseBookApiActions {
         apiClient.authenticate(username, password);
     }
 
+    @Given("the user is not logged in")
+    public void theUserIsNotLoggedIn() {
+        apiClient.noAuthenticate();
+    }
+
     @Then("the response status code should be {int}")
     public void theResponseStatusCodeShouldBe(int statusCode) {
         apiClient.verifyStatusCode(statusCode);
