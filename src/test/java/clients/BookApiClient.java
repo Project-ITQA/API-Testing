@@ -1,5 +1,6 @@
 package clients;
 
+import io.restassured.http.ContentType;
 import models.Book;
 import net.serenitybdd.annotations.Step;
 import org.hamcrest.Matchers;
@@ -22,32 +23,25 @@ public class BookApiClient {
 
     @Step("authenticate with username: {0} and password: {1}")
     public void authenticate(String username, String password) {
-        given().auth().preemptive().basic(username, password);
+        given().auth().preemptive().basic(username, password).contentType(ContentType.JSON).accept(ContentType.JSON);
+    }
+
+    @Step("not authenticated")
+    public void noAuthenticate() {
+        given().contentType(ContentType.JSON).accept(ContentType.JSON);
     }
 
     @Step("post the book")
     public void createBook(Book book) {
-        given()
-                .auth()
-                .preemptive()
-                .basic("admin", "password")
-                .contentType("application/json")
-                .body(book.toJSONString())
-                .when()
-                .post(BookApiEndpoints.CREATE);
+        given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE);
     }
 
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
         if (book.getId() > 0) {
-            then().
-                    body("id", equalTo(book.getId()))
-                    .body("title", equalTo(book.getTitle()))
-                    .body("author", equalTo(book.getAuthor()));
+            then().body("id", equalTo(book.getId())).body("title", equalTo(book.getTitle())).body("author", equalTo(book.getAuthor()));
         } else {
-            then()
-                    .body("title", equalTo(book.getTitle()))
-                    .body("author", equalTo(book.getAuthor()));
+            then().body("title", equalTo(book.getTitle())).body("author", equalTo(book.getAuthor()));
         }
     }
 

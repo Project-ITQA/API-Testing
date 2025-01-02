@@ -13,6 +13,7 @@ public class GetAllBooksApiActions {
 
     @Given("the user is not logged in")
     public void theUserIsNotLoggedIn() {
+        apiClient.noAuthenticate();
     }
 
     @When("the user requests the list of all books")
@@ -25,7 +26,7 @@ public class GetAllBooksApiActions {
         apiClient.checkResponseContainsBookInList(new Book());
     }
 
-    @And("the response should contain an empty array")
+    @And("the response should be empty")
     public void theResponseShouldContainAnEmptyArray() {
         apiClient.checkResponseReturnedEmptyList();
     }
