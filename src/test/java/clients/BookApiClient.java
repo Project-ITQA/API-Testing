@@ -19,7 +19,7 @@ public class BookApiClient {
         then().statusCode(statusCode);
     }
 
-    @Step("post the book {0}")
+    @Step("post the book")
     public void createBook(Book book) {
         given()
                 .auth()
