@@ -32,7 +32,9 @@ public class CreateBookApiActions {
 
     @When("user posts the book details title {string}")
     public void user_posts_the_book_details_title(String title) {
-        bookApiClient.createBookWithTitle(title);
+        Book book = new Book();
+        book.setTitle(title);
+        bookApiClient.createBookWithTitle(book);
     }
 
     @When("user posts the book details title {string} and author {string} and Id {int}")
