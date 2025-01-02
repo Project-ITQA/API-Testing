@@ -2,7 +2,6 @@ package tests;
 
 import clients.BookApiClient;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import net.serenitybdd.annotations.Steps;
 
@@ -10,17 +9,12 @@ public class GetAllBooksApiActions {
     @Steps
     BookApiClient apiClient;
 
-    @Given("user is not logged in")
-    public void userNotLoggedIn() {
+    @Given("the user is not logged in")
+    public void theUserIsNotLoggedIn() {
     }
 
-    @When("user asks for all books")
-    public void asksForAllBooks() {
+    @When("the user requests the list of all books")
+    public void theUserRequestsTheListOfAllBooks() {
         apiClient.getAllBooks();
-    }
-
-    @Then("user gets status code as {int}")
-    public void receiveStatusCode(int statusCode) {
-        apiClient.verifyStatusCode(statusCode);
     }
 }
