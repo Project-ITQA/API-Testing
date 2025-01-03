@@ -111,4 +111,21 @@ public class BookApiClient {
     public Response getStoredResponse() {
         return Serenity.sessionVariableCalled("response");
     }
+
+    public void updateBookWithInvalidId(String invalidId, Book book) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", invalidId);
+        requestBody.put("title", book.getTitle());
+        given()
+                .contentType("application/json")
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .body(book)
+                .when()
+                .put(BookApiEndpoints.UPDATE,invalidId)
+                .then()
+                .extract()
+                .response(); // Pass the invalid ID in the URL
+    }
 }
