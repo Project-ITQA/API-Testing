@@ -1,5 +1,6 @@
 package clients;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Book;
@@ -127,5 +128,22 @@ public class BookApiClient {
                 .then()
                 .extract()
                 .response(); // Pass the invalid ID in the URL
+    }
+
+    public void updateBookWithNonExistentId(String id, Book book) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", id);
+        requestBody.put("title", book.getTitle());
+        requestBody.put("author", book.getAuthor());
+        given()
+                .contentType("application/json")
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE,id)
+                .then()
+                .statusCode(404);; // Pass the invalid ID in the URL
     }
 }

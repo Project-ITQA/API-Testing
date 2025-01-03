@@ -20,4 +20,13 @@ public class UpdateBookApiActions {
 
         bookApiClient.updateBookWithInvalidId(invalidId, book);
     }
+
+    @When("user updates a book with a non-existent ID {string}, title {string}, and author {string}")
+    public void userUpdatesBookWithNonExistentId(String id, String title, String author) {
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+
+        bookApiClient.updateBookWithNonExistentId(id, book);
+    }
 }
