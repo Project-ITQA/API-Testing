@@ -111,4 +111,20 @@ public class BookApiClient {
     public Response getStoredResponse() {
         return Serenity.sessionVariableCalled("response");
     }
+
+    @Step("update the book with valid input")
+    public void updateBookWithValidInput(Book updatedBook) {
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(updatedBook.toJSONString())
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+    }
 }

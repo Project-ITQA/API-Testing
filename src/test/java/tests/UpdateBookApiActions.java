@@ -1,25 +1,28 @@
 package tests;
 
+import clients.BookApiClient;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import models.Book;
 import net.serenitybdd.annotations.Steps;
 
 public class UpdateBookApiActions {
-//    @Steps
-//    BookApiClient bookApiClient;
-//
-//    @Given("user is not logged in")
-//    public void userNotLoggedIn() {
-//    }
-//
-//    @When("user asks for all books")
-//    public void asksForAllBooks() {
-//        bookApiClient.getAllBooks();
-//    }
-//
-//    @Then("user gets unauthorized response")
-//    public void getUnauthorizedResponse() {
-//        bookApiClient.verifyUnauthorized();
-//    }
+
+        @Steps
+        BookApiClient apiClient;
+
+    @When("user updates the book with title {string} and author {string} with new title {string} and new author {string}")
+    public void user_updates_the_book_with_title_and_author_with_new_title_and_new_author(String title, String author, String newTitle, String newAuthor) {
+        int id = apiClient.getStoredResponse().jsonPath().getInt("id");
+        Book updatedBook = new Book(id, newTitle, newAuthor);
+        apiClient.updateBookWithValidInput(updatedBook);
+    }
+
+
+    @Then("user gets the updated book with title {string} and author {string} and id as response")
+    public void userGetsTheUpdatedBookWithTitleAndAuthorAndIdAsResponse(String title, String author) {
+        int id = apiClient.getStoredResponse().jsonPath().getInt("id");
+        apiClient.checkResponseBook(new Book(id, title, author));
+    }
 }
