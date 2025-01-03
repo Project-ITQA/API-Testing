@@ -1,8 +1,10 @@
 package clients;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import models.Book;
 import net.serenitybdd.annotations.Step;
+import net.serenitybdd.core.Serenity;
 import org.hamcrest.Matchers;
 import utils.BookApiEndpoints;
 
@@ -129,6 +131,8 @@ public class BookApiClient {
                 .log().all();
     }
 
-
-
+    @Step("get stored response from session")
+    public Response getStoredResponse() {
+        return Serenity.sessionVariableCalled("response");
+    }
 }
