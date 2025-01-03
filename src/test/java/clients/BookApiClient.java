@@ -57,6 +57,7 @@ public class BookApiClient {
 
     @Step("post the book")
     public void createBook(Book book) {
+        System.out.println(username_create+password_create);
         given()
                 .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")

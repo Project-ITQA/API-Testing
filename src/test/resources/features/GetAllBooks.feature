@@ -19,7 +19,7 @@ Feature: Get All Books
 
 
   Scenario Outline: Users retrieves a list of books when at least one book is in database
-    Given the user is logged in with username: "<Username>" and password: "<Password>"
+    Given the user is logged in with username: "<Username>" and password: "<Password>" for CREATE
     And user posts the book details title "<Title>" and author "<Author>"
     When the user requests the list of all books
     Then the response status code should be 200
