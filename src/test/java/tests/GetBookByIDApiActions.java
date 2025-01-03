@@ -17,6 +17,11 @@ public class GetBookByIDApiActions {
        apiClient.getBooksByID(id);
     }
 
+    @When("user calls the service to get the book with invalid ID {string}")
+    public void get_book_by_invalid_ID (String id){
+        apiClient.getBooksByInvalidID(id);
+    }
+
     @Then("user gets the book with title {string} and author {string} and ID {int} as response")
     public void user_gets_the_book_as_response(String title, String author, int id) {
         apiClient.checkResponseBook(new Book(id, title, author));
