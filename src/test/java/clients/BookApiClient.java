@@ -10,6 +10,7 @@ import utils.BookApiEndpoints;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static net.serenitybdd.rest.SerenityRest.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -112,19 +113,42 @@ public class BookApiClient {
         return Serenity.sessionVariableCalled("response");
     }
 
-    @Step("update the book with valid input")
-    public void updateBookWithValidInput(Book updatedBook) {
+    @Step("update the book")
+    public void updateBook(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", updatedBook.getId() );
+        requestBody.put("title", Objects.equals(updatedBook.getTitle(), "[blank]") ? "" : updatedBook.getTitle());
+        requestBody.put("author", Objects.equals(updatedBook.getAuthor(), "[blank]") ? "" : updatedBook.getAuthor());
         // Update the book
         given()
                 .auth()
                 .preemptive()
                 .basic("admin", "password")
                 .contentType("application/json")
-                .body(updatedBook.toJSONString())
+                .body(requestBody)
                 .when()
                 .put(BookApiEndpoints.UPDATE, updatedBook.getId())
                 .then()
                 .extract()
                 .response();
     }
+
+    @Step("update book with only title in req body")
+    public void updateBookWithOnlyTitle(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("title", updatedBook.getTitle());
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+    }
+
 }
