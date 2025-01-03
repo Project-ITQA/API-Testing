@@ -133,6 +133,26 @@ public class BookApiClient {
                 .response();
     }
 
+    @Step("update the book with invalid values")
+    public void updateBookWithInvalidValues(int id, int title, int author) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", id );
+        requestBody.put("title", title);
+        requestBody.put("author", author);
+        // Update the book with invalid values
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, id)
+                .then()
+                .extract()
+                .response();
+    }
+
     @Step("update book with only id and title in req body")
     public void updateBookWithOnlyTitle(Book updatedBook) {
         Map<String, Object> requestBody = new HashMap<>();
