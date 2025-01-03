@@ -1,5 +1,7 @@
-#Feature: Get All Books
-#  Scenario: Get All Books When Not Logged In
-#    Given user is not logged in
-#    When user asks for all books
-#    Then user gets unauthorized response
+Feature: Get Book by ID
+
+  Scenario: Unauthorized access when not logged in
+  Given a book exists in the database with title "Test Book", and author "Test Author"
+  And the user is not logged in
+  When user requests book details by ID 0
+  Then user gets status code as 401 - getid
