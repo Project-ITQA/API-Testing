@@ -15,6 +15,17 @@ import static org.hamcrest.Matchers.hasItem;
 
 public class BookApiClient {
 
+
+    private String username_create="";
+    private String password_create="";
+
+    @Step("authenticate with username: {0} and password: {1} for CREATE")
+    public void authenticate_CREATE(String username, String password) {
+        this.username_create = username;
+        this.password_create = password;
+//        System.out.println(username_create+password_create);
+    }
+
     @Step("GET all books")
     public void getAllBooks() {
         when().get(BookApiEndpoints.GET_ALL);
@@ -35,10 +46,25 @@ public class BookApiClient {
         given().contentType(ContentType.JSON).accept(ContentType.JSON);
     }
 
+//    @Step("post the book")
+//    public void createBook(Book book) {
+//        System.out.println(username_create+password_create);
+//
+//        given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book).when().post(BookApiEndpoints.CREATE).then().log().all();
+//    }
+
     @Step("post the book")
     public void createBook(Book book) {
-        given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE);
+        given()
+                .auth().preemptive().basic(username_create, password_create)
+                .contentType("application/json")
+                .body(book)
+                .when()
+                .post(BookApiEndpoints.CREATE)
+                .then()
+                .log().all();
     }
+
 
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
@@ -76,8 +102,9 @@ public class BookApiClient {
         requestBody.put("title", title);
         requestBody.put("author", author);
 
+        System.out.println(username_create+password_create);
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -93,7 +120,7 @@ public class BookApiClient {
         requestBody.put("author", author);
 
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -101,4 +128,7 @@ public class BookApiClient {
                 .then()
                 .log().all();
     }
+
+
+
 }
