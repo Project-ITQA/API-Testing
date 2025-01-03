@@ -15,11 +15,11 @@ Feature: Get Books By ID
     When user calls the service to get the book with valid ID 1
     Then user gets 200 code
     Then user gets the book with title "Safe Harbour" and author "Danielle" and ID 1 as response
-#
+
   Scenario: Get a non-existence book by ID as the admin
     When user calls the service to get the book with ID 9999
     Then user gets 404 code
-#
+
   Scenario: Get a non-existence book by ID as the regular user
     When user calls the service to get the book with ID 9999
     Then user gets 404 code
@@ -32,6 +32,8 @@ Feature: Get Books By ID
     When user calls the service to get the book with invalid ID "abc"
     Then user gets 400 code
 
-
-
-
+  Scenario: Unauthorized access when not logged in
+    Given a book exists in the database with title "Test Book", and author "Test Author"
+    And the user is not logged in
+    When user requests book details by ID 0
+    Then user gets status code as 401 - getid
