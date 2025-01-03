@@ -4,6 +4,8 @@ import models.Book;
 import net.serenitybdd.annotations.Step;
 import utils.BookApiEndpoints;
 
+import javax.swing.plaf.PanelUI;
+
 import static net.serenitybdd.rest.SerenityRest.*;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -13,6 +15,9 @@ public class BookApiClient {
     public void getAllBooks() {
         when().get(BookApiEndpoints.GET_ALL);
     }
+
+    @Step("Get books by ID")
+    public void getBooksByID(){when().get(BookApiEndpoints.GET_BY_ID);}
 
     @Step("Verify status code as {0}")
     public void verifyStatusCode(int statusCode) {
