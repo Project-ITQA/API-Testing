@@ -1,8 +1,10 @@
 package clients;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import models.Book;
 import net.serenitybdd.annotations.Step;
+import net.serenitybdd.core.Serenity;
 import org.hamcrest.Matchers;
 import utils.BookApiEndpoints;
 
@@ -37,7 +39,10 @@ public class BookApiClient {
 
     @Step("post the book")
     public void createBook(Book book) {
-        given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE);
+        Response response = given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE).then().extract().response();
+
+        // Store the response in Serenity's session
+        Serenity.setSessionVariable("response").to(response);
     }
 
     @Step("response contains the book")
@@ -100,5 +105,10 @@ public class BookApiClient {
                 .post(BookApiEndpoints.CREATE)
                 .then()
                 .log().all();
+    }
+
+    @Step("get stored response from session")
+    public Response getStoredResponse() {
+        return Serenity.sessionVariableCalled("response");
     }
 }
