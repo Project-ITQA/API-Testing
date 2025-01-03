@@ -12,9 +12,9 @@ public class GetBookByIDApiActions {
     @Steps
     BookApiClient apiClient;
 
-    @When("user calls the service to get the book with valid ID {int}")
-    public void successful_retrieval_of_a_book_for_admin_login (){
-       apiClient.getBooksByID();
+    @When("user calls the service to get the book with ID {int}")
+    public void get_book_by_ID (int id){
+       apiClient.getBooksByID(id);
     }
 
     @Then("user gets the book with title {string} and author {string} and ID {int} as response")

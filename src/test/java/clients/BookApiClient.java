@@ -20,8 +20,11 @@ public class BookApiClient {
         when().get(BookApiEndpoints.GET_ALL);
     }
 
-    @Step("Get books by ID")
-    public void getBooksByID(){when().get(BookApiEndpoints.GET_BY_ID);}
+    @Step("Get books by ID {0}")
+    public void getBooksByID(int id) {
+        when().get(BookApiEndpoints.GET_BY_ID.replace("{id}", String.valueOf(id)));
+
+    }
 
     @Step("Verify status code as {0}")
     public void verifyStatusCode(int statusCode) {
