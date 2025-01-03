@@ -18,9 +18,32 @@ import static org.hamcrest.Matchers.hasItem;
 
 public class BookApiClient {
 
+
+    private String username_create="";
+    private String password_create="";
+
+    @Step("authenticate with username: {0} and password: {1} for CREATE")
+    public void authenticate_CREATE(String username, String password) {
+        this.username_create = username;
+        this.password_create = password;
+//        System.out.println(username_create+password_create);
+    }
+
     @Step("GET all books")
     public void getAllBooks() {
         when().get(BookApiEndpoints.GET_ALL);
+    }
+
+    @Step("Get books by ID {0}")
+    public void getBooksByID(int id) {
+        when().get(BookApiEndpoints.GET_BY_ID.replace("{id}", String.valueOf(id)));
+
+    }
+
+    @Step("Get books by invalid ID {0}")
+    public void getBooksByInvalidID(String id) {
+        when().get(BookApiEndpoints.GET_BY_ID.replace("{id}", id));
+
     }
 
     @Step("Verify status code as {0}")
@@ -38,13 +61,21 @@ public class BookApiClient {
         given().contentType(ContentType.JSON).accept(ContentType.JSON);
     }
 
+//    @Step("post the book")
+//    public void createBook(Book book) {
+//        System.out.println(username_create+password_create);
+//
+//        given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book).when().post(BookApiEndpoints.CREATE).then().log().all();
+//    }
+
     @Step("post the book")
     public void createBook(Book book) {
-        Response response = given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE).then().extract().response();
+        Response response = given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE).then().extract().response();
 
         // Store the response in Serenity's session
         Serenity.setSessionVariable("response").to(response);
     }
+
 
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
@@ -82,8 +113,9 @@ public class BookApiClient {
         requestBody.put("title", title);
         requestBody.put("author", author);
 
+        System.out.println(username_create+password_create);
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -99,7 +131,7 @@ public class BookApiClient {
         requestBody.put("author", author);
 
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -189,6 +221,24 @@ public class BookApiClient {
                 .then()
                 .extract()
                 .response();
+      
+    @Step("send delete book request for id {0}")
+    public void sendDeleteBookRequest(int id) {
+        given()
+                .auth().preemptive().basic(username_create, password_create)
+                .contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as admin")
+    public void sendDeletePrevBookRequestasAdmin() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("admin", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as user")
+    public void sendDeletePrevBookRequestasUser() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("user", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
     }
 
 }
