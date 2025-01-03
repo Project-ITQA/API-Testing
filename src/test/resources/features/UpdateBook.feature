@@ -64,3 +64,14 @@ Feature: Update a book
       | originalTitle    | originalAuthor  | newTitle          |
       | Invisible Cities | Italo Calvino   | Jorge Luis Borges |
       | A Man Called Ove | Fredrik Backman | A Women Called Eve|
+
+  Scenario Outline: Update a book with invalid values
+    Given user posts the book details title "<originalTitle>" and author "<originalAuthor>"
+    Given user gets 201 code
+    When user updates the book with title "<originalTitle>" and author "<originalAuthor>" with new title <newTitle> and new author <newAuthor>
+    Then user gets 400 code
+
+    Examples:
+      | originalTitle          | originalAuthor   | newTitle    | newAuthor |
+      | The Silent Patient-12  | Alex Michaelides | 531535      | 456444    |
+      | Brave New World        | Aldous Huxley    | 915566      | 454684    |

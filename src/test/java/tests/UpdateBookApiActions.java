@@ -46,4 +46,10 @@ public class UpdateBookApiActions {
         Book updatedBook = new Book(id, "", author);
         apiClient.updateBookWithOnlyAuthor(updatedBook);
     }
+
+    @When("user updates the book with title {string} and author {string} with new title {int} and new author {int}")
+    public void userUpdatesTheBookWithTitleAndAuthorWithNewTitleAndNewAuthorWithInvalidValues(String title, String author, int newTitle, int newAuthor) {
+        int id = apiClient.getStoredResponse().jsonPath().getInt("id");
+        apiClient.updateBookWithInvalidValues(id, newTitle, newAuthor);
+    }
 }
