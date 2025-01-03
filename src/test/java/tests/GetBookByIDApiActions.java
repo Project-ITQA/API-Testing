@@ -22,6 +22,7 @@ public class GetBookByIDApiActions {
 
     @When("user requests book details by ID {int}")
     public void userRequestsBookDetailsByID(int id) {
+//        apiClient.authenticate("", "");
         apiClient.getBookByIdWithoutAuth(id);
 
 
