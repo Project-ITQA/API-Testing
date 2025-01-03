@@ -133,10 +133,30 @@ public class BookApiClient {
                 .response();
     }
 
-    @Step("update book with only title in req body")
+    @Step("update book with only id and title in req body")
     public void updateBookWithOnlyTitle(Book updatedBook) {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("title", updatedBook.getTitle());
+        requestBody.put("id", updatedBook.getId());
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+    }
+
+    @Step("update book with only id and author in req body")
+    public void updateBookWithOnlyAuthor(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("author", updatedBook.getAuthor());
+        requestBody.put("id", updatedBook.getId());
         // Update the book
         given()
                 .auth()

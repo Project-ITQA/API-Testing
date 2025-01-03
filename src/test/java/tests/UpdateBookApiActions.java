@@ -32,4 +32,18 @@ public class UpdateBookApiActions {
         Book updatedBook = new Book(id, title, "");
         apiClient.updateBookWithOnlyTitle(updatedBook);
     }
+
+    @When("user updates the book with only the id and title {string} in the request body")
+    public void userUpdatesTheBookWithOnlyTheTitleInTheRequestBody(String string) {
+        int id = apiClient.getStoredResponse().jsonPath().getInt("id");
+        Book updatedBook = new Book(id, string, "");
+        apiClient.updateBookWithOnlyTitle(updatedBook);
+    }
+
+    @When("user updates the book with only the id and author {string} in the request body")
+    public void userUpdatesTheBookWithOnlyTheIdAndAuthorStringInTheRequestBody(String author) {
+        int id = apiClient.getStoredResponse().jsonPath().getInt("id");
+        Book updatedBook = new Book(id, "", author);
+        apiClient.updateBookWithOnlyAuthor(updatedBook);
+    }
 }
