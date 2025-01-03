@@ -9,6 +9,8 @@ Feature: Create a Book
     Given user authenticates using username "user" and password "password"
     When user sends a request to create a book with title - "The Silent Patient" and author - "Alex Michaelides"
     Then user gets status code as 201
+    Then user gets the book with title "The Silent Patient" and author "Alex Michaelides" as response
+
 
   Scenario: Invalid data type for title in the payload
     Given user authenticates using username "user" and password "password"
