@@ -10,6 +10,7 @@ import utils.BookApiEndpoints;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static net.serenitybdd.rest.SerenityRest.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -143,6 +144,84 @@ public class BookApiClient {
     public Response getStoredResponse() {
         return Serenity.sessionVariableCalled("response");
     }
+
+    @Step("update the book")
+    public void updateBook(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", updatedBook.getId() );
+        requestBody.put("title", Objects.equals(updatedBook.getTitle(), "[blank]") ? "" : updatedBook.getTitle());
+        requestBody.put("author", Objects.equals(updatedBook.getAuthor(), "[blank]") ? "" : updatedBook.getAuthor());
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+    }
+
+    @Step("update the book with invalid values")
+    public void updateBookWithInvalidValues(int id, int title, int author) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", id );
+        requestBody.put("title", title);
+        requestBody.put("author", author);
+        // Update the book with invalid values
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, id)
+                .then()
+                .extract()
+                .response();
+    }
+
+    @Step("update book with only id and title in req body")
+    public void updateBookWithOnlyTitle(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("title", updatedBook.getTitle());
+        requestBody.put("id", updatedBook.getId());
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+    }
+
+    @Step("update book with only id and author in req body")
+    public void updateBookWithOnlyAuthor(Book updatedBook) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("author", updatedBook.getAuthor());
+        requestBody.put("id", updatedBook.getId());
+        // Update the book
+        given()
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .contentType("application/json")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE, updatedBook.getId())
+                .then()
+                .extract()
+                .response();
+      
     @Step("send delete book request for id {0}")
     public void sendDeleteBookRequest(int id) {
         given()
