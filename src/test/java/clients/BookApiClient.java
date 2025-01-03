@@ -1,8 +1,10 @@
 package clients;
 
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import models.Book;
 import net.serenitybdd.annotations.Step;
+import net.serenitybdd.core.Serenity;
 import org.hamcrest.Matchers;
 import utils.BookApiEndpoints;
 
@@ -14,6 +16,17 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 
 public class BookApiClient {
+
+
+    private String username_create="";
+    private String password_create="";
+
+    @Step("authenticate with username: {0} and password: {1} for CREATE")
+    public void authenticate_CREATE(String username, String password) {
+        this.username_create = username;
+        this.password_create = password;
+//        System.out.println(username_create+password_create);
+    }
 
     @Step("GET all books")
     public void getAllBooks() {
@@ -47,10 +60,21 @@ public class BookApiClient {
         given().contentType(ContentType.JSON).accept(ContentType.JSON);
     }
 
+//    @Step("post the book")
+//    public void createBook(Book book) {
+//        System.out.println(username_create+password_create);
+//
+//        given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book).when().post(BookApiEndpoints.CREATE).then().log().all();
+//    }
+
     @Step("post the book")
     public void createBook(Book book) {
-        given().auth().preemptive().basic("admin", "password").contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE);
+        Response response = given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE).then().extract().response();
+
+        // Store the response in Serenity's session
+        Serenity.setSessionVariable("response").to(response);
     }
+
 
     @Step("response contains the book")
     public void checkResponseBook(Book book) {
@@ -88,8 +112,9 @@ public class BookApiClient {
         requestBody.put("title", title);
         requestBody.put("author", author);
 
+        System.out.println(username_create+password_create);
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -105,7 +130,7 @@ public class BookApiClient {
         requestBody.put("author", author);
 
         given()
-//                .auth().preemptive().basic(username, password)
+                .auth().preemptive().basic(username_create, password_create)
                 .contentType("application/json")
                 .body(requestBody)
                 .when()
@@ -113,4 +138,28 @@ public class BookApiClient {
                 .then()
                 .log().all();
     }
+
+    @Step("get stored response from session")
+    public Response getStoredResponse() {
+        return Serenity.sessionVariableCalled("response");
+    }
+    @Step("send delete book request for id {0}")
+    public void sendDeleteBookRequest(int id) {
+        given()
+                .auth().preemptive().basic(username_create, password_create)
+                .contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as admin")
+    public void sendDeletePrevBookRequestasAdmin() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("admin", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as user")
+    public void sendDeletePrevBookRequestasUser() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("user", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
 }

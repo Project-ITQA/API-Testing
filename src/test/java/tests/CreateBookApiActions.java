@@ -13,16 +13,7 @@ public class CreateBookApiActions {
     @Steps
     BookApiClient apiClient;
 
-    @Then("user gets status code as {int}")
-    public void receiveStatusCode(int statusCode) {
-        apiClient.verifyStatusCode(statusCode);
-    }
 
-
-    @Given("user authenticates using username {string} and password {string}")
-    public void userAuthenticatesUsingUsernameAndPassword(String arg0, String arg1) {
-        apiClient.authenticate(arg0, arg1);
-    }
 
     @When("user sends a request to create a book with title - {string} and author - {string}")
     public void userSendsARequestToCreateABook(String title, String author) {
@@ -82,6 +73,12 @@ public class CreateBookApiActions {
     @When("user posts the book details title {string} and author {string} and Id {int}")
     public void userPostsTheBookDetailsTitleAndAuthorAndId(String title, String author, int id) {
         apiClient.createBook(new Book(id, title, author));
+    }
+
+    @Given("the user is logged in with username: {string} and password: {string} for CREATE")
+    public void theUserIsLoggedInWithUsernameAndPasswordForCREATE(String arg0, String arg1) {
+        apiClient.authenticate_CREATE(arg0, arg1);
+
     }
 }
 
