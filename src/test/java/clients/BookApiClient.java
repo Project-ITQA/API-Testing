@@ -22,7 +22,7 @@ public class BookApiClient {
     private String password_create="";
 
     @Step("authenticate with username: {0} and password: {1} for CREATE")
-    public void authenticate(String username, String password) {
+    public void authenticate_CREATE(String username, String password) {
         this.username_create = username;
         this.password_create = password;
 //        System.out.println(username_create+password_create);
@@ -38,10 +38,10 @@ public class BookApiClient {
         then().statusCode(statusCode);
     }
 
-//    @Step("authenticate with username: {0} and password: {1}")
-//    public void authenticate(String username, String password) {
-//        given().auth().preemptive().basic(username, password).contentType(ContentType.JSON).accept(ContentType.JSON);
-//    }
+    @Step("authenticate with username: {0} and password: {1}")
+    public void authenticate(String username, String password) {
+        given().auth().preemptive().basic(username, password).contentType(ContentType.JSON).accept(ContentType.JSON);
+    }
 
     @Step("not authenticated")
     public void noAuthenticate() {
