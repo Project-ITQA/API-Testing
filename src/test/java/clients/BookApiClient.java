@@ -57,15 +57,10 @@ public class BookApiClient {
 
     @Step("post the book")
     public void createBook(Book book) {
-        System.out.println(username_create+password_create);
-        given()
-                .auth().preemptive().basic(username_create, password_create)
-                .contentType("application/json")
-                .body(book)
-                .when()
-                .post(BookApiEndpoints.CREATE)
-                .then()
-                .log().all();
+        Response response = given().auth().preemptive().basic(username_create, password_create).contentType("application/json").body(book.toJSONString()).when().post(BookApiEndpoints.CREATE).then().extract().response();
+
+        // Store the response in Serenity's session
+        Serenity.setSessionVariable("response").to(response);
     }
 
 
