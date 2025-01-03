@@ -77,7 +77,7 @@ public class CreateBookApiActions {
 
     @Given("the user is logged in with username: {string} and password: {string} for CREATE")
     public void theUserIsLoggedInWithUsernameAndPasswordForCREATE(String arg0, String arg1) {
-        apiClient.authenticate_CREATE(arg0, arg1);
+        apiClient.authenticate(arg0, arg1);
 
     }
 }
