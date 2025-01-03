@@ -1,5 +1,6 @@
 package clients;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.Book;
@@ -145,6 +146,40 @@ public class BookApiClient {
         return Serenity.sessionVariableCalled("response");
     }
 
+    public void updateBookWithInvalidId(String invalidId, Book book) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", invalidId);
+        requestBody.put("title", book.getTitle());
+        given()
+                .contentType("application/json")
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .body(book)
+                .when()
+                .put(BookApiEndpoints.UPDATE,invalidId)
+                .then()
+                .extract()
+                .response(); // Pass the invalid ID in the URL
+    }
+
+    public void updateBookWithNonExistentId(String id, Book book) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("id", id);
+        requestBody.put("title", book.getTitle());
+        requestBody.put("author", book.getAuthor());
+        given()
+                .contentType("application/json")
+                .auth()
+                .preemptive()
+                .basic("admin", "password")
+                .body(requestBody)
+                .when()
+                .put(BookApiEndpoints.UPDATE,id)
+                .then()
+                .statusCode(404);; // Pass the invalid ID in the URL
+    }
+
     @Step("update the book")
     public void updateBook(Book updatedBook) {
         Map<String, Object> requestBody = new HashMap<>();
@@ -240,5 +275,4 @@ public class BookApiClient {
         int id = getStoredResponse().jsonPath().getInt("id");
         given().auth().preemptive().basic("user", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
     }
-
 }

@@ -12,6 +12,23 @@ public class UpdateBookApiActions {
     @Steps
     BookApiClient apiClient;
 
+    @When("user updates a book with an invalid ID {string} and title {string} and author {string}")
+    public void userUpdatesBookWithInvalidId(String invalidId, String title, String author) {
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+
+        apiClient.updateBookWithInvalidId(invalidId, book);
+    }
+
+    @When("user updates a book with a non-existent ID {string}, title {string}, and author {string}")
+    public void userUpdatesBookWithNonExistentId(String id, String title, String author) {
+        Book book = new Book();
+        book.setTitle(title);
+        book.setAuthor(author);
+
+        apiClient.updateBookWithNonExistentId(id, book);
+
     @When("user updates the book with title {string} and author {string} with new title {string} and new author {string}")
     public void user_updates_the_book_with_title_and_author_with_new_title_and_new_author(String title, String author, String newTitle, String newAuthor) {
         int id = apiClient.getStoredResponse().jsonPath().getInt("id");
