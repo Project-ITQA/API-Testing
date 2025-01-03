@@ -131,4 +131,23 @@ public class BookApiClient {
     public Response getStoredResponse() {
         return Serenity.sessionVariableCalled("response");
     }
+    @Step("send delete book request for id {0}")
+    public void sendDeleteBookRequest(int id) {
+        given()
+                .auth().preemptive().basic(username_create, password_create)
+                .contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as admin")
+    public void sendDeletePrevBookRequestasAdmin() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("admin", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
+    @Step("send delete request for previously added book as user")
+    public void sendDeletePrevBookRequestasUser() {
+        int id = getStoredResponse().jsonPath().getInt("id");
+        given().auth().preemptive().basic("user", "password").contentType("application/json").when().delete(BookApiEndpoints.BASE_URL + "/books/" +id);
+    }
+
 }
